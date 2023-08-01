@@ -1,7 +1,9 @@
 [package]
 name = "one_inch"
-version = "0.1.0"
-edition = "2021"
+version = "0.0.1"
+authors = ["Rosenthall <rosenthall@riseup.net>"]
+description = "Rusty API wrapper for the 1inch"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
