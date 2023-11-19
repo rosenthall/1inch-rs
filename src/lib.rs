@@ -1,3 +1,5 @@
+extern crate core;
+
 pub mod swap;
 pub mod approve;
 pub mod utils;

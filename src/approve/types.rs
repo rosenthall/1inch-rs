@@ -12,13 +12,13 @@ pub struct AllowanceDetailsBuilder {
 /// Represents the details required for performing a /version/id/approve/allowance request
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AllowanceDetails {
-    token_address : String,
-    wallet_address : String
+    pub token_address : String,
+    pub wallet_address : String
 }
 
 impl AllowanceDetailsBuilder {
 
-    fn new() -> AllowanceDetailsBuilder {
+    pub fn new() -> AllowanceDetailsBuilder {
         AllowanceDetailsBuilder {
             token_address : None,
             wallet_address : None
@@ -39,12 +39,10 @@ impl AllowanceDetailsBuilder {
 
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct AllowanceResponse {
-    allowance : String
+    pub allowance : String
 }
-
-
 
 
 #[cfg(test)]
