@@ -8,6 +8,9 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[example]]
+name = "allowance"
+path = "examples/allowance.rs"
 
 [dependencies]
 thiserror = "1.0.49"
