@@ -5,7 +5,7 @@ use strum_macros::{FromRepr};
 pub struct OneInchClient {
 
     /// reqwest::Client does not need to be Rc/Arc because it already uses an Arc internally.
-    http_client : reqwest::Client,
+    pub http_client : reqwest::Client,
 
     /// An authorization token for interacting with API.
     /// There you can get your own token : <https://portal.1inch.dev/applications>

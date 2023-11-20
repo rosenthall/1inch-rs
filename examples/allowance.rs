@@ -1,8 +1,6 @@
-// Importing necessary modules from the `one_inch` crate
 use one_inch::client::{self, SupportedNetworks};
 use one_inch::approve::*;
 
-// The main asynchronous function that will be executed
 #[tokio::main]
 async fn main() {
     // Setting the network ID to Binance Smart Chain (BSC)
@@ -24,7 +22,7 @@ async fn main() {
     let allowance = client.get_allowance(allowance_details.clone()).await
         .map_err(|e| {
             // Handling and printing an error if it occurs
-            eprintln!("Error while getting allowance : {}", e.into())
+            eprintln!("Error while getting allowance : {}", e.to_string())
         }).unwrap();
 
     // Printing the obtained allowance information

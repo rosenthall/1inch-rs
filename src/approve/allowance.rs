@@ -1,6 +1,6 @@
 use std::error::Error;
 use reqwest::Url;
-use crate::client::{OneInchClient, SupportedNetworks};
+use crate::client::{OneInchClient};
 use crate::approve::{AllowanceDetails, AllowanceResponse};
 use crate::consts::{BASIC_URL, SWAP_API_VERSION};
 
@@ -15,7 +15,7 @@ impl OneInchClient {
             ("walletAddress", details.wallet_address),
         ]).map_err(|e| Box::new(e) as Box<dyn Error>)?;
 
-        let request_result = reqwest::Client::new()
+        let request_result = self.http_client
             .get(url_with_params)
             .header("Authorization", &self.token)
             .send()
