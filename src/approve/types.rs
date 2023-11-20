@@ -56,9 +56,15 @@ pub struct SpenderDetailsBuilder {
 impl SpenderDetailsBuilder {
     builder_setter!(chain, u32);
 
+    pub fn new() -> SpenderDetailsBuilder {
+        SpenderDetailsBuilder {
+            chain : None
+        }
+    }
+
     pub fn build(&self) -> Result<SpenderDetails, BasicBuilderError> {
         Ok(SpenderDetails {
-            chain : self.chain.ok_or(BasicBuilderError::MissingField("token_address"))?
+            chain : self.chain.ok_or(BasicBuilderError::MissingField("chain"))?
         })
 
     }
@@ -83,6 +89,14 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_spender_details_builder() {
+        let spender_details = SpenderDetailsBuilder::new().chain(15).build().unwrap();
+
+        assert_eq!(spender_details.chain, 15);
+    }
+
+
+    #[test]
     fn test_allowance_details_builder() {
         let allowance_details = AllowanceDetailsBuilder::new()
             .wallet_address("0x30A557351eab496FD69F537BE1F8c744A18F94Fd".into())
@@ -98,4 +112,5 @@ mod tests {
 
 
     }
+
 }
