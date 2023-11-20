@@ -84,6 +84,62 @@ pub struct RouterAddress {
     pub address : String
 }
 
+/// Builder struct to create instance of `ApproveTranactionDetails`
+pub struct ApproveTranactionDetailsBuilder {
+    chain : Option<u32>,
+    token_address : Option<String>,
+    amount : Option<Option<String>>
+}
+
+impl ApproveTranactionDetailsBuilder {
+    pub fn new() -> ApproveTranactionDetailsBuilder {
+        ApproveTranactionDetailsBuilder {
+            chain : None,
+            token_address : None,
+            amount : None
+        }
+    }
+
+    builder_setter!(chain, u32);
+    builder_setter!(token_address, String);
+    builder_setter!(amount, Option<String>);
+
+    pub fn build(&self) -> Result<ApproveTranactionDetails, BasicBuilderError> {
+        Ok(ApproveTranactionDetails {
+            chain : self.chain.ok_or(BasicBuilderError::MissingField("chain"))?,
+            token_address : self.token_address.clone().ok_or(BasicBuilderError::MissingField("token_address"))?,
+            amount: self.amount.clone().ok_or(BasicBuilderError::MissingField("amount"))?
+        })
+    }
+}
+
+
+
+/// Struct contains the values we need to perform approve/transaction request.
+/// amount with value `None` will mean that you want set maximal allowance.
+pub struct ApproveTranactionDetails {
+    pub chain : u32,
+    pub token_address : String,
+    pub amount : Option<String>
+}
+
+
+
+/// Struct represents data to make an approve transaction as server returns it.
+/// Includes raw transaction and other data to perform tx.
+#[derive(Debug, Clone, Deserialize)]
+pub struct ApproveCallData {
+    pub data : String,
+
+    #[serde(rename = "gasPrice")]
+    pub gas_price : String,
+
+    pub to : String,
+    pub value : String
+}
+
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -94,6 +150,23 @@ mod tests {
 
         assert_eq!(spender_details.chain, 15);
     }
+
+
+    #[test]
+    fn test_approve_transaction_details_builder() {
+        let approve_details = ApproveTranactionDetailsBuilder::new()
+            .amount(None)
+            .chain(1)
+            .token_address("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48".to_string())
+            .build().unwrap();
+
+
+        assert_eq!(&approve_details.token_address, "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+        assert_eq!(approve_details.amount.clone(), None);
+        assert_eq!(approve_details.chain.clone(), 1);
+
+    }
+
 
 
     #[test]
