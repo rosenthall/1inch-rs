@@ -45,6 +45,34 @@ pub struct AllowanceResponse {
 }
 
 
+pub struct SpenderDetailsBuilder {
+    chain : Option<u32>
+}
+
+impl SpenderDetailsBuilder {
+    builder_setter!(chain, u32);
+
+    pub fn build(&self) -> Result<SpenderDetails, BasicBuilderError> {
+        Ok(SpenderDetails {
+            chain : self.chain.ok_or(BasicBuilderError::MissingField("token_address"))?
+        })
+
+    }
+
+}
+
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SpenderDetails {
+    pub chain : u32,
+}
+
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct RouterAddress {
+    pub address : String
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
