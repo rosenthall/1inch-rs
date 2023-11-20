@@ -9,11 +9,13 @@ pub struct AllowanceDetailsBuilder {
     wallet_address : Option<String>
 }
 
-/// Represents the details required for performing a /version/id/approve/allowance request
+/// Represents the details required for an approve/allowance request.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AllowanceDetails {
-    pub token_address : String,
-    pub wallet_address : String
+    /// Address of the token contract for which to retrieve allowance.
+    pub token_address: String,
+    /// Address of the wallet for which to get allowance.
+    pub wallet_address: String,
 }
 
 impl AllowanceDetailsBuilder {
@@ -39,12 +41,14 @@ impl AllowanceDetailsBuilder {
 
 }
 
+/// Represents the struct we receive after making request to get current Allowance.
 #[derive(Deserialize, Debug)]
 pub struct AllowanceResponse {
     pub allowance : String
 }
 
 
+/// Builder struct to create instance of `SpenderDetails`
 pub struct SpenderDetailsBuilder {
     chain : Option<u32>
 }
@@ -61,13 +65,14 @@ impl SpenderDetailsBuilder {
 
 }
 
-
+/// Struct contains the value we need to perform approve/spender request.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpenderDetails {
     pub chain : u32,
 }
 
 
+/// Struct represents router address as 1inch returns it.
 #[derive(Debug, Clone, Deserialize)]
 pub struct RouterAddress {
     pub address : String

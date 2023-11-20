@@ -6,6 +6,8 @@ use crate::consts::{BASIC_URL, SWAP_API_VERSION};
 
 
 impl OneInchClient {
+
+    /// Retrieves the current allowance for a token on the specified account.
     pub async fn get_allowance(&self, details: AllowanceDetails) -> Result<AllowanceResponse, Box<dyn Error>> {
 
         let url = format!("{}/swap/{}/{}/approve/allowance", BASIC_URL, SWAP_API_VERSION, self.network_id.to_string());
