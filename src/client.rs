@@ -1,33 +1,28 @@
 use core::fmt;
-use strum_macros::{FromRepr};
+use strum_macros::FromRepr;
 
 /// Struct to work with 1inch api
 pub struct OneInchClient {
-
     /// reqwest::Client does not need to be Rc/Arc because it already uses an Arc internally.
-    pub http_client : reqwest::Client,
+    pub http_client: reqwest::Client,
 
     /// An authorization token for interacting with API.
     /// There you can get your own token : <https://portal.1inch.dev/applications>
-    pub(crate) token : String,
+    pub(crate) token: String,
 
     /// The ID of the network on which you want to work.
     /// You can interact only with 1 specified network with your client.
-    pub(crate) network_id : SupportedNetworks,
+    pub(crate) network_id: SupportedNetworks,
 }
 
-
-
 /// Function creates a OneInchClient instance with default http settings.
-pub fn new_with_default_http(token : String, network_id : SupportedNetworks) -> OneInchClient {
+pub fn new_with_default_http(token: String, network_id: SupportedNetworks) -> OneInchClient {
     OneInchClient {
         http_client: reqwest::Client::default(),
         token,
         network_id,
     }
 }
-
-
 
 /// List of all supported Networks/Chains with their IDs.
 #[derive(FromRepr, Debug, Copy, Clone)]

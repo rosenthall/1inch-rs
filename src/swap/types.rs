@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
-use thiserror::Error;
-use num_bigint::BigUint;
 use crate::builder_setter;
+use num_bigint::BigUint;
+use serde::{Deserialize, Serialize};
+use thiserror::Error;
 
 /// Enumerates potential errors when constructing `SwapDetails`.
 #[derive(Error, Debug, Eq, PartialEq)]
@@ -18,13 +18,13 @@ pub enum SwapDetailsBuilderError {
 /// Represents the details required for performing a token swap.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SwapDetails {
-    src: String,                  // Source token address.
-    dst: String,                  // Destination token address.
-    amount: String,               // Amount to be swapped.
-    from: String,                 // Address of the user initiating the swap.
-    slippage: usize,              // Permitted slippage percentage.
-    disable_estimate: bool,       // If true, disables estimation.
-    allow_partial_fill: bool,     // If true, allows the swap to be partially filled.
+    src: String,              // Source token address.
+    dst: String,              // Destination token address.
+    amount: String,           // Amount to be swapped.
+    from: String,             // Address of the user initiating the swap.
+    slippage: usize,          // Permitted slippage percentage.
+    disable_estimate: bool,   // If true, disables estimation.
+    allow_partial_fill: bool, // If true, allows the swap to be partially filled.
 }
 
 /// A builder pattern implementation for creating a `SwapDetails`.
@@ -38,6 +38,11 @@ pub struct SwapDetailsBuilder {
     allow_partial_fill: Option<bool>,
 }
 
+impl Default for SwapDetailsBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl SwapDetailsBuilder {
     /// Constructs a new `SwapDetailsBuilder` with all fields uninitialized.
@@ -72,11 +77,22 @@ impl SwapDetailsBuilder {
     /// Attempts to construct a `SwapDetails` from the builder, returning errors if required fields are missing.
     pub fn build(self) -> Result<SwapDetails, SwapDetailsBuilderError> {
         Ok(SwapDetails {
-            src: self.from_token_addr.ok_or(SwapDetailsBuilderError::MissingField("from_token_addr"))?,
-            dst: self.to_token_addr.ok_or(SwapDetailsBuilderError::MissingField("to_token_addr"))?,
-            amount: self.amount.ok_or(SwapDetailsBuilderError::MissingField("amount"))?.to_string(),
-            from: self.from_addr.ok_or(SwapDetailsBuilderError::MissingField("from_addr"))?,
-            slippage: self.slippage.ok_or(SwapDetailsBuilderError::MissingField("slippage"))?,
+            src: self
+                .from_token_addr
+                .ok_or(SwapDetailsBuilderError::MissingField("from_token_addr"))?,
+            dst: self
+                .to_token_addr
+                .ok_or(SwapDetailsBuilderError::MissingField("to_token_addr"))?,
+            amount: self
+                .amount
+                .ok_or(SwapDetailsBuilderError::MissingField("amount"))?
+                .to_string(),
+            from: self
+                .from_addr
+                .ok_or(SwapDetailsBuilderError::MissingField("from_addr"))?,
+            slippage: self
+                .slippage
+                .ok_or(SwapDetailsBuilderError::MissingField("slippage"))?,
             disable_estimate: self.disable_estimate.unwrap_or(false),
             allow_partial_fill: self.allow_partial_fill.unwrap_or(false),
         })
@@ -96,7 +112,8 @@ mod tests {
             .to_token_addr("to_token".to_string())
             .amount(BigUint::from(1000u32))
             .from_addr("from_addr".to_string())
-            .slippage(5).expect("Invalid slippage")
+            .slippage(5)
+            .expect("Invalid slippage")
             .disable_estimate(false)
             .allow_partial_fill(false)
             .build()
@@ -107,8 +124,8 @@ mod tests {
         assert_eq!(swap_details.amount, "1000");
         assert_eq!(swap_details.from, "from_addr");
         assert_eq!(swap_details.slippage, 5);
-        assert_eq!(swap_details.disable_estimate, false);
-        assert_eq!(swap_details.allow_partial_fill, false);
+        assert!(!swap_details.disable_estimate);
+        assert!(!swap_details.allow_partial_fill);
     }
 
     /// Tests the builder's response to an invalid slippage value.

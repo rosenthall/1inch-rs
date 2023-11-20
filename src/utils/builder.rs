@@ -12,12 +12,10 @@ macro_rules! builder_setter {
     };
 }
 
-
 /// Basic structure for error handling in Builder for structures where there is no need to handle other errors.
 #[derive(Error, Debug, Eq, PartialEq)]
 pub enum BasicBuilderError {
     /// Indicates a required field is missing its value.
     #[error("Missing {0}")]
     MissingField(&'static str),
-
 }
