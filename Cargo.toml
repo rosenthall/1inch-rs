@@ -16,6 +16,11 @@ path = "examples/allowance.rs"
 name = "approve"
 path = "examples/approve.rs"
 
+[[example]]
+name = "swap"
+path = "examples/swap.rs"
+
+
 
 
 [dependencies]
