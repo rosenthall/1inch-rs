@@ -81,15 +81,15 @@ pub struct SwapDetailsBuilder {
 #[derive(Deserialize, Debug)]
 pub struct SwapResponse {
     #[serde(rename = "fromToken")]
-    pub from_token: TokenInfo,
+    pub from_token: Option<TokenInfo>,
 
     #[serde(rename = "toToken")]
-    pub to_token: TokenInfo,
+    pub to_token: Option<TokenInfo>,
 
     #[serde(rename = "toAmount")]
     pub to_amount: String,
 
-    pub protocols: Vec<Vec<Vec<SelectedProtocol>>>,
+    pub protocols: Option<Vec<Vec<Vec<SelectedProtocol>>>>,
 
 
     #[serde(rename = "tx")]
@@ -190,6 +190,18 @@ pub struct HttpExceptionMeta {
 
     /// The value associated with this metadata.
     value: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SelectedProtocol {
+    pub name: String,
+    pub part: f64,
+
+    #[serde(rename = "fromTokenAddress")]
+    pub from_token_address: String,
+
+    #[serde(rename = "toTokenAddress")]
+    pub to_token_address: String,
 }
 
 
@@ -308,18 +320,6 @@ impl SwapDetailsBuilder {
     }
 }
 
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SelectedProtocol {
-    pub name: String,
-    pub part: f64,
-
-    #[serde(rename = "fromTokenAddress")]
-    pub from_token_address: String,
-
-    #[serde(rename = "toTokenAddress")]
-    pub to_token_address: String,
-}
 
 
 

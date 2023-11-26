@@ -58,7 +58,6 @@ impl OneInchClient {
         let url_with_params =
             Url::parse_with_params(&url, params).map_err(|e| Box::new(e) as Box<dyn Error>)?;
 
-        dbg!(&url_with_params);
 
         let response = match self
             .http_client
@@ -72,9 +71,9 @@ impl OneInchClient {
 
         if response.status().as_u16() == 400 {
             let error_body = response.text().await.unwrap_or_default();
-            match serde_json::from_str::<SwapRequestError>(&error_body) {
+            return match serde_json::from_str::<SwapRequestError>(&error_body) {
                 Ok(err) => {
-                    return Err(SwapError::SwapRequest {
+                    Err(SwapError::SwapRequest {
                         description: err.description,
                         error: err.error,
                         status_code: err.status_code,
@@ -82,9 +81,7 @@ impl OneInchClient {
                     }.into())
                 },
                 Err(e) => {
-                    // Преобразование reqwest::Error в serde_json::Error не является тривиальным,
-                    // поэтому используем SwapError::Other для непредвиденных ошибок
-                    return Err(SwapError::Other(format!("Error parsing error response: {}", e)).into())
+                    Err(SwapError::Other(format!("Error parsing error response: {}", e)).into())
                 },
             }
         }
@@ -92,6 +89,7 @@ impl OneInchClient {
         if response.status().is_client_error() || response.status().is_server_error() {
             return Err(SwapError::Other(format!("Server responded with error: {}", response.status())).into());
         }
+
 
         let swap_data: SwapResponse = match response.json().await {
             Ok(data) => data,
