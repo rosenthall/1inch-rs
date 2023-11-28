@@ -1,5 +1,5 @@
 use std::error::Error;
-use std::io::ErrorKind;
+
 use reqwest::Url;
 use crate::client::OneInchClient;
 use crate::consts::{BASIC_URL, SWAP_API_VERSION};

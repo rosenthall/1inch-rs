@@ -1,5 +1,5 @@
 use crate::builder_setter;
-use num_bigint::BigUint;
+
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use crate::common::token::TokenInfo;
@@ -205,6 +205,12 @@ pub struct SelectedProtocol {
 }
 
 
+impl Default for SwapDetailsBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl SwapDetailsBuilder {
     /// Constructs a new `SwapDetailsBuilder` with all fields uninitialized.
     pub fn new() -> Self {
@@ -348,8 +354,8 @@ mod tests {
         assert_eq!(swap_details.amount, "1000");
         assert_eq!(swap_details.from, "from_addr");
         assert_eq!(swap_details.slippage, 5);
-        assert!(!swap_details.disable_estimate);
-        assert!(!swap_details.allow_partial_fill);
+        assert!(!swap_details.disable_estimate.unwrap());
+        assert!(!swap_details.allow_partial_fill.unwrap());
     }
 
     /// Tests the builder's response to an invalid slippage value.

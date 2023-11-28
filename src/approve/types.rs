@@ -9,7 +9,7 @@ pub struct AllowanceDetailsBuilder {
 }
 
 /// Represents the details required for an approve/allowance request.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct AllowanceDetails {
     /// Address of the token contract for which to retrieve allowance.
     pub token_address: String,
