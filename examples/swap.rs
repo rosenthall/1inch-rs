@@ -1,8 +1,7 @@
 use std::time::Duration;
-use num_bigint::BigUint;
-use one_inch::approve::*;
 use one_inch::client::{self, SupportedNetworks};
-use one_inch::swap::SwapDetailsBuilder;
+use one_inch::swap::{SwapDetails, SwapDetailsBuilder};
+
 
 #[tokio::main]
 async fn main() {
@@ -22,10 +21,9 @@ async fn main() {
     // Creating a new One Inch client with the provided API token and network ID
     let client = client::new_with_default_http(token.into(), network_id);
 
-
-    // Making basic swap
+    // Making basic swap request
     let swap_details = SwapDetailsBuilder::new()
-        .amount(bnb_in_wei.clone()) // 5 * (10 ^ -18)
+        .amount(bnb_in_wei.clone())
         .from_addr(my_address.clone())
         .src(src.clone())
         .dst(dst.clone())
@@ -36,7 +34,7 @@ async fn main() {
     let basic_swap = client.swap(swap_details).await
         .map_err(|e| {
             // Handling and printing an error if it occurs
-            eprintln!("Error while getting raw swap tx: {}", e)
+            eprintln!("Error while getting raw swap tx for first time: {}", e)
         }).unwrap();
 
 
@@ -47,12 +45,12 @@ async fn main() {
     tokio::time::sleep(Duration::from_secs(5)).await;
 
 
-    // Making swap with some additional parameters
+    // Making swap request with some additional parameters
     let extended_swap_details = SwapDetailsBuilder::new()
-        .amount(bnb_in_wei) // 5 * (10 ^ -18)
-        .from_addr(my_address)
-        .src(src)
-        .dst(dst)
+        .amount(bnb_in_wei.clone())
+        .from_addr(my_address.clone())
+        .src(src.clone())
+        .dst(dst.clone())
         .slippage(2).unwrap()
         .include_tokens_info(true)
         .include_gas(true)
@@ -63,9 +61,27 @@ async fn main() {
     let extended_swap = client.swap(extended_swap_details).await
         .map_err(|e| {
             // Handling and printing an error if it occurs
-            eprintln!("Error while getting raw swap tx: {}", e)
+            eprintln!("Error while getting raw swap tx for second time: {}", e)
         }).unwrap();
 
     println!("Response for perfoming another swap : {:#?}", extended_swap);
 
+    // timeout of 5 seconds to avoid server restrictions
+    tokio::time::sleep(Duration::from_secs(5)).await;
+
+
+
+    // Making swap request where server should return error.
+    let error_swap_details = SwapDetailsBuilder::new()
+        .amount(bnb_in_wei)
+        .from_addr(my_address)
+        .src(dst) // In this example we`ll swap XRP to USDT. Since my account doesn't have any xrp balance and allowance for the 1inch contract -
+        .dst(src) // 1inch server will return error.
+        .slippage(2).unwrap()
+        .build().unwrap();
+
+
+    let error_swap = client.swap(error_swap_details).await;
+
+    println!("Got error(which is good!) for third tx : {:#?}", error_swap.unwrap_err());
 }
