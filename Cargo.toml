@@ -17,6 +17,10 @@ name = "approve"
 path = "examples/approve.rs"
 
 [[example]]
+name = "info"
+path = "examples/info.rs"
+
+[[example]]
 name = "swap"
 path = "examples/swap.rs"
 
