@@ -20,6 +20,10 @@ path = "examples/approve.rs"
 name = "swap"
 path = "examples/swap.rs"
 
+[[example]]
+name = "quote"
+path = "examples/quote.rs"
+
 
 
 
