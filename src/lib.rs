@@ -7,4 +7,5 @@ pub mod swap;
 pub mod utils;
 
 pub mod common;
+pub mod liquidity_pools;
 pub mod tokens_list;
