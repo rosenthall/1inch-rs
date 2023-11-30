@@ -1,4 +1,4 @@
-use one_inch::approve::*;
+use one_inch::swap::approve::*;
 use one_inch::client::{self, SupportedNetworks};
 
 #[tokio::main]

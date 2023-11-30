@@ -1,4 +1,4 @@
-use crate::approve::{ApproveCallData, ApproveTranactionDetails};
+use crate::swap::approve::{ApproveCallData, ApproveTranactionDetails};
 use crate::client::OneInchClient;
 use crate::consts::{BASIC_URL, SWAP_API_VERSION};
 use reqwest::Url;

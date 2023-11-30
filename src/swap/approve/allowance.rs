@@ -1,4 +1,4 @@
-use crate::approve::{AllowanceDetails, AllowanceResponse};
+use crate::swap::approve::{AllowanceDetails, AllowanceResponse};
 use crate::client::OneInchClient;
 use crate::consts::{BASIC_URL, SWAP_API_VERSION};
 use reqwest::Url;

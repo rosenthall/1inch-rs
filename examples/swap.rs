@@ -1,6 +1,6 @@
 use std::time::Duration;
 use one_inch::client::{self, SupportedNetworks};
-use one_inch::swap::{SwapDetails, SwapDetailsBuilder};
+use one_inch::swap::{SwapDetailsBuilder};
 
 
 #[tokio::main]
