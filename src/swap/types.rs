@@ -198,10 +198,10 @@ pub struct SwapRequestError {
 pub struct HttpExceptionMeta {
     /// The type of metadata.
     #[serde(rename = "type")]
-    type_field: String,
+    pub type_field: String,
 
     /// The value associated with this metadata.
-    value: String,
+    pub value: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

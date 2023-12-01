@@ -17,7 +17,6 @@ async fn main() {
     // Getting raw tx that can be used to create transaction in blockchain
     let approve_details = ApproveTranactionDetailsBuilder::new()
         .amount(Some("5000000000000000".to_string()))
-        .chain(53)
         .token_address(usdt_address_bsc)
         .build()
         .unwrap();

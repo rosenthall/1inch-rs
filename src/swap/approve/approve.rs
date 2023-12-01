@@ -18,10 +18,8 @@ impl OneInchClient {
             self.network_id
         );
 
-        let chain_id_str = details.chain.to_string();
-
         let mut params: Vec<(&str, String)> = vec![
-            ("chain", chain_id_str),
+            ("chain", self.network_id.to_string()),
             ("tokenAddress", details.token_address),
         ];
 

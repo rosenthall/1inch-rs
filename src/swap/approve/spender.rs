@@ -1,4 +1,4 @@
-use crate::swap::approve::{RouterAddress, SpenderDetails};
+use crate::swap::approve::{RouterAddress};
 use crate::client::OneInchClient;
 use crate::consts::{BASIC_URL, SWAP_API_VERSION};
 use std::error::Error;
@@ -8,12 +8,11 @@ impl OneInchClient {
     /// Note: The function returns the result for the requested network, not the one set during `OneInchClient` initialization.
     pub async fn get_router_address(
         &self,
-        details: SpenderDetails,
     ) -> Result<RouterAddress, Box<dyn Error>> {
         // Construct the URL for fetching router address.
         let url = format!(
             "{}/swap/{}/{}/approve/spender",
-            BASIC_URL, SWAP_API_VERSION, details.chain
+            BASIC_URL, SWAP_API_VERSION, self.network_id
         );
 
         // Send HTTP GET request with authorization header.

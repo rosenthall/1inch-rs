@@ -1,6 +1,6 @@
 use crate::builder_setter;
 use crate::utils::builder::BasicBuilderError;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 
 /// Builder struct to create instance of `AllowanceDetails`
 pub struct AllowanceDetailsBuilder {
@@ -55,37 +55,6 @@ pub struct AllowanceResponse {
     pub allowance: String,
 }
 
-/// Builder struct to create instance of `SpenderDetails`
-pub struct SpenderDetailsBuilder {
-    chain: Option<u32>,
-}
-
-impl Default for SpenderDetailsBuilder {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl SpenderDetailsBuilder {
-    builder_setter!(chain, u32);
-
-    pub fn new() -> SpenderDetailsBuilder {
-        SpenderDetailsBuilder { chain: None }
-    }
-
-    pub fn build(&self) -> Result<SpenderDetails, BasicBuilderError> {
-        Ok(SpenderDetails {
-            chain: self.chain.ok_or(BasicBuilderError::MissingField("chain"))?,
-        })
-    }
-}
-
-/// Struct contains the value we need to perform approve/spender request.
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SpenderDetails {
-    pub chain: u32,
-}
-
 /// Struct represents router address as 1inch returns it.
 #[derive(Debug, Clone, Deserialize)]
 pub struct RouterAddress {
@@ -94,7 +63,6 @@ pub struct RouterAddress {
 
 /// Builder struct to create instance of `ApproveTranactionDetails`
 pub struct ApproveTranactionDetailsBuilder {
-    chain: Option<u32>,
     token_address: Option<String>,
     amount: Option<Option<String>>,
 }
@@ -108,19 +76,16 @@ impl Default for ApproveTranactionDetailsBuilder {
 impl ApproveTranactionDetailsBuilder {
     pub fn new() -> ApproveTranactionDetailsBuilder {
         ApproveTranactionDetailsBuilder {
-            chain: None,
             token_address: None,
             amount: None,
         }
     }
 
-    builder_setter!(chain, u32);
     builder_setter!(token_address, String);
     builder_setter!(amount, Option<String>);
 
     pub fn build(&self) -> Result<ApproveTranactionDetails, BasicBuilderError> {
         Ok(ApproveTranactionDetails {
-            chain: self.chain.ok_or(BasicBuilderError::MissingField("chain"))?,
             token_address: self
                 .token_address
                 .clone()
@@ -136,7 +101,6 @@ impl ApproveTranactionDetailsBuilder {
 /// Struct contains the values we need to perform approve/transaction request.
 /// amount with value `None` will mean that you want set maximal allowance.
 pub struct ApproveTranactionDetails {
-    pub chain: u32,
     pub token_address: String,
     pub amount: Option<String>,
 }
@@ -159,17 +123,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_spender_details_builder() {
-        let spender_details = SpenderDetailsBuilder::new().chain(15).build().unwrap();
-
-        assert_eq!(spender_details.chain, 15);
-    }
-
-    #[test]
     fn test_approve_transaction_details_builder() {
         let approve_details = ApproveTranactionDetailsBuilder::new()
             .amount(None)
-            .chain(1)
             .token_address("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48".to_string())
             .build()
             .unwrap();
