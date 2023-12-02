@@ -17,7 +17,7 @@ Because of this, it only covers some of the API, and may also contain some bugs.
 
 ## Usage
 
-For detailed examples on how to use each endpoint, please refer to the [examples directory](https://github.com/rosenthall/1inch-rs/tree/main/examples) in the repository.
+For detailed examples on how to use each endpoint, please refer to the [examples directory](https://github.com/rosenthall/1inch-rs/tree/master/examples) in the repository.
 
 
 License
