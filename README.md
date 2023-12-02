@@ -17,14 +17,7 @@ Because of this, it only covers some of the API, and may also contain some bugs.
 
 ## Usage
 
-There are a lot of usage-examples for each request type. See `/examples/`.
-
-You can run any example with this command:
-```bash
-ONE_INCH_API_TOKEN=YOUR_API_KEY cargo run --example [example_name]
-```
-Replace [example_name] with the name of the example you want to launch.
-
+For detailed examples on how to use each endpoint, please refer to the [examples directory](https://github.com/rosenthall/1inch-rs/tree/main/examples) in the repository.
 
 
 License
