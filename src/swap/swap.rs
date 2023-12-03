@@ -7,7 +7,7 @@ use crate::swap::{SwapDetails, SwapError, SwapRequestError, SwapResponse};
 use crate::utils::params::insert_optional_param;
 
 impl OneInchClient {
-    /// Gets a `SwapTrancationData`.
+    /// Performs swap request with predefined parameters.
     pub async fn swap(
         &self,
         details: SwapDetails,

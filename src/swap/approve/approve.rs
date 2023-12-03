@@ -6,7 +6,8 @@ use std::error::Error;
 use crate::utils::params::insert_optional_param;
 
 impl OneInchClient {
-    /// Gets a `ApproveCallData` for specific token, account and amount.
+    /// Performs request to get `ApproveCallData` for specific token, account and amount.
+    /// Actually we will get a raw transaction which changes the required token`s allowance value to a specified amount on executing.
     pub async fn approve(
         &self,
         details: ApproveTranactionDetails,

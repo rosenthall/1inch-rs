@@ -108,7 +108,9 @@ pub struct SwapResponse {
     pub transaction : SwapTranactionData
 }
 
-#[derive(Deserialize,Debug)]
+
+/// SwapTranactionData is a struct contains some information and a binary representation of raw_tranaction to perform swap on blockchain.
+#[derive(Deserialize, Debug)]
 pub struct SwapTranactionData {
     pub from : String,
     pub to : String,
@@ -121,9 +123,6 @@ pub struct SwapTranactionData {
 
     pub gas : u128
 }
-
-
-
 
 /// Represents errors that can occur during both swap or quote request.
 /// We use the same struct to handle errors that may occur with `swap` and `quote` requests because the possible errors are almost identical.
@@ -297,7 +296,7 @@ impl SwapDetailsBuilder {
         Ok(self)
     }
 
-    /// Attempts to construct a `SwapDetails` from the builder, returning errors if required fields are missing or if some of values are incorrect.
+    /// Attempts to construct a ['SwapDetails'](crate::swap::types::SwapDetails) from the builder, returning errors if required fields are missing or if some of values are incorrect.
     pub fn build(self) -> Result<SwapDetails, SwapDetailsBuilderError> {
         Ok(SwapDetails {
             src: self

@@ -5,7 +5,6 @@ use std::error::Error;
 
 impl OneInchClient {
     /// Retrieves the router address for the specified network.
-    /// Note: The function returns the result for the requested network, not the one set during `OneInchClient` initialization.
     pub async fn get_router_address(
         &self,
     ) -> Result<RouterAddress, Box<dyn Error>> {
