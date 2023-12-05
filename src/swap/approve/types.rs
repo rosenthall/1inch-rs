@@ -3,6 +3,7 @@ use crate::utils::builder::BasicBuilderError;
 use serde::{Deserialize};
 
 /// Builder struct to create instance of `AllowanceDetails`
+#[derive(Default)]
 pub struct AllowanceDetailsBuilder {
     token_address: Option<String>,
     wallet_address: Option<String>,
@@ -17,24 +18,15 @@ pub struct AllowanceDetails {
     pub wallet_address: String,
 }
 
-impl Default for AllowanceDetailsBuilder {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl AllowanceDetailsBuilder {
     pub fn new() -> AllowanceDetailsBuilder {
-        AllowanceDetailsBuilder {
-            token_address: None,
-            wallet_address: None,
-        }
+        AllowanceDetailsBuilder::default()
     }
 
     builder_setter!(token_address, String);
     builder_setter!(wallet_address, String);
 
-    /// Attempts to construct a `AllowanceDetails` from the builder, returning errors if required fields are missing.
+    /// Attempts to construct a [`AllowanceDetails`](crate::swap::approve::AllowanceDetails) from the builder, returning errors if required fields are missing or if some of values are incorrect.
     pub fn build(&self) -> Result<AllowanceDetails, BasicBuilderError> {
         Ok(AllowanceDetails {
             wallet_address: self
@@ -62,28 +54,21 @@ pub struct RouterAddress {
 }
 
 /// Builder struct to create instance of `ApproveTranactionDetails`
+#[derive(Default)]
 pub struct ApproveTranactionDetailsBuilder {
     token_address: Option<String>,
     amount: Option<Option<String>>,
 }
 
-impl Default for ApproveTranactionDetailsBuilder {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl ApproveTranactionDetailsBuilder {
     pub fn new() -> ApproveTranactionDetailsBuilder {
-        ApproveTranactionDetailsBuilder {
-            token_address: None,
-            amount: None,
-        }
+        ApproveTranactionDetailsBuilder::default()
     }
 
     builder_setter!(token_address, String);
     builder_setter!(amount, Option<String>);
 
+    /// Attempts to construct a [`ApproveTranactionDetails`](crate::swap::approve::ApproveTranactionDetails) from the builder, returning errors if required fields are missing or if some of values are incorrect.
     pub fn build(&self) -> Result<ApproveTranactionDetails, BasicBuilderError> {
         Ok(ApproveTranactionDetails {
             token_address: self
@@ -100,6 +85,7 @@ impl ApproveTranactionDetailsBuilder {
 
 /// Struct contains the values we need to perform approve/transaction request.
 /// amount with value `None` will mean that you want set maximal allowance.
+#[derive(Debug, Clone)]
 pub struct ApproveTranactionDetails {
     pub token_address: String,
     pub amount: Option<String>,
@@ -135,7 +121,6 @@ mod tests {
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
         );
         assert_eq!(approve_details.amount.clone(), None);
-        assert_eq!(approve_details.chain.clone(), 1);
     }
 
     #[test]

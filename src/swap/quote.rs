@@ -7,7 +7,7 @@ use crate::swap::{QuoteDetails, QuoteResponse, SwapError, SwapRequestError};
 use crate::utils::params::insert_optional_param;
 
 impl OneInchClient {
-    /// Gets a `QuoteResponse` via given data..
+    /// Performs `quote` request with predefined parameters.
     pub async fn quote(
         &self,
         details: QuoteDetails,

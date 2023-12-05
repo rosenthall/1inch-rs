@@ -77,7 +77,7 @@ impl OneInchClient {
 
         // Adding `currency` param if not None
         if let Some(currency) = details.currency {
-            url_with_params = format!("{}?currency={}", url_with_params, currency.to_string());
+            url_with_params = format!("{}?currency={}", url_with_params, currency);
         }
 
         let url = Url::parse(&url_with_params).map_err(|e| Box::new(e) as Box<dyn Error>)?;

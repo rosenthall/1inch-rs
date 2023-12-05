@@ -30,7 +30,7 @@ pub enum QuoteDetailsBuilderError {
     InvalidFee
 }
 /// Represents the details required for performing a token swap.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SwapDetails {
     pub src: String,              // Source token address.
     pub dst: String,              // Destination token address.
@@ -60,6 +60,7 @@ pub struct SwapDetails {
 }
 
 /// A builder pattern implementation for creating a `SwapDetails`.
+#[derive(Default)]
 pub struct SwapDetailsBuilder {
     src: Option<String>,
     dst: Option<String>,
@@ -216,39 +217,10 @@ pub struct SelectedProtocol {
 }
 
 
-impl Default for SwapDetailsBuilder {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl SwapDetailsBuilder {
     /// Constructs a new `SwapDetailsBuilder` with all fields uninitialized.
     pub fn new() -> Self {
-        SwapDetailsBuilder {
-            src: None,
-            dst: None,
-            amount: None,
-            from_addr: None,
-            slippage: None,
-
-            fee: None,
-            protocols: None,
-            gas_price: None,
-            complexity_level: None,
-            parts: None,
-            main_route_parts: None,
-            gas_limit: None,
-            include_tokens_info: None,
-            include_protocols: None,
-            include_gas: None,
-            connector_tokens: None,
-            permit: None,
-            receiver: None,
-            referrer: None,
-            disable_estimate: None,
-            allow_partial_fill: None,
-        }
+        SwapDetailsBuilder::default()
     }
 
     builder_setter!(src, String);
@@ -340,6 +312,7 @@ impl SwapDetailsBuilder {
 
 
 /// QuoteDetails is struct that contains data we need to perform /quote request.
+#[derive(Debug, Clone)]
 pub struct QuoteDetails {
     pub src: String,              // Source token address.
     pub dst: String,              // Destination token address.
@@ -362,6 +335,7 @@ pub struct QuoteDetails {
 
 
 /// QuoteDetailsBuilder is struct to create instance of `QuoteDetails`
+#[derive(Default)]
 pub struct QuoteDetailsBuilder {
     pub src: Option<String>,
     pub dst: Option<String>,
@@ -385,23 +359,7 @@ pub struct QuoteDetailsBuilder {
 
 impl QuoteDetailsBuilder {
     pub fn new() -> Self {
-        QuoteDetailsBuilder {
-            src: None,
-            dst: None,
-            amount: None,
-
-            fee: None,
-            protocols: None,
-            gas_price: None,
-            complexity_level: None,
-            parts: None,
-            main_route_parts: None,
-            gas_limit: None,
-            include_tokens_info: None,
-            include_protocols: None,
-            include_gas: None,
-            connector_tokens: None,
-        }
+        QuoteDetailsBuilder::default()
     }
 
 
@@ -430,7 +388,8 @@ impl QuoteDetailsBuilder {
         Ok(self)
     }
 
-    /// Attempts to construct a `QuoteDetails` from the builder, returning errors if required fields are missing or if some of values are incorrect.
+
+    /// Attempts to construct a [`QuoteDetails`](crate::swap::QuoteDetails) from the builder, returning errors if required fields are missing or if some of values are incorrect.
     pub fn build(self) -> Result<QuoteDetails, QuoteDetailsBuilderError> {
         Ok(QuoteDetails {
             src: self
