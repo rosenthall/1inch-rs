@@ -23,3 +23,6 @@ pub mod swap;
 
 /// Common structures definitions shared by other modules.
 pub mod common;
+
+/// Modules related to tokens, including retrieving supported currencies, token metadata, getting its price.
+pub mod tokens;

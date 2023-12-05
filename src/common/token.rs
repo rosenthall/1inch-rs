@@ -1,5 +1,7 @@
 use serde::{Deserialize};
 
+/// Struct defines TokenInfo object.
+/// Contains basic information about specific token
 #[derive(Debug, Deserialize)]
 pub struct TokenInfo {
     pub address: String,

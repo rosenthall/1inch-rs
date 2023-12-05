@@ -1,5 +1,5 @@
 use core::fmt;
-use strum_macros::FromRepr;
+use strum_macros::{Display, FromRepr};
 
 /// Struct to work with 1inch api
 pub struct OneInchClient {
@@ -46,4 +46,13 @@ impl fmt::Display for SupportedNetworks {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", *self as u32)
     }
+}
+
+
+/// List of all supported currencies in 1inch.
+#[derive(Debug, Display, Clone)]
+pub enum SupportedCurrencies {
+    USD, AED, ARS, AUD, BDT, BHD, BMD, BRL, CAD, CHF, CLP, CNY, CZK, DKK, EUR, GBP,
+    HKD, HUF, IDR, ILS, INR, JPY, KRW, KWD, LKR, MMK, MXN, MYR, NGN, NOK, NZD,
+    PHP, PKR, PLN, RUB, SAR, SEK, SGD, THB, TRY, TWD, UAH, VEF, VND, ZAR
 }
