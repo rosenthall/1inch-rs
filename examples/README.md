@@ -13,3 +13,4 @@ To run an example, use `ONE_INCH_API_TOKEN=YOUR_API_KEY cargo run --example [exa
 - `info` : Get information about available for swapping tokens and about liquidity protocols 
 - `swap`: Different examples of usage swap api + error handling.
 - `quote`: Pretty the same as `swap` example, but about `quote` api.
+- `prices`: Get information about all supported currencies and check price for specific tokens.

@@ -28,6 +28,10 @@ path = "examples/swap.rs"
 name = "quote"
 path = "examples/quote.rs"
 
+[[example]]
+name = "prices"
+path = "examples/prices.rs"
+
 
 
 
