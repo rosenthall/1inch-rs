@@ -5,8 +5,7 @@
 **Note: Currently the project is under development!**
 Because of this, it only covers some of the API, and may also contain some bugs.
 
-## Currently Supported Endpoints
-
+## Currently Supported Endpoints (only schematically)
 - `/swap/liquidity-sources`
 - `/swap/tokens`
 - `/swap/quote/`
@@ -14,9 +13,10 @@ Because of this, it only covers some of the API, and may also contain some bugs.
 - `/swap/approve/spender`
 - `/swap/approve/transaction`
 - `/swap/approve/allowance`
+- `/price/{chain}/{addresses}`
+- `/price/currencies`
 
 ## Usage
-
 For detailed examples on how to use each endpoint, please refer to the [examples directory](https://github.com/rosenthall/1inch-rs/tree/master/examples) in the repository.
 
 
