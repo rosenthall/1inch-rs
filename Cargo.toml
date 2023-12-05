@@ -1,6 +1,6 @@
 [package]
 name = "one_inch"
-version = "0.0.1"
+version = "0.1.1"
 authors = ["Rosenthall <rosenthall@riseup.net>"]
 description = "Rusty API wrapper for the 1inch"
 license = "BSD-3"
