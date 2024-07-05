@@ -1,6 +1,8 @@
+use one_inch::{
+    client::{self, SupportedCurrencies, SupportedNetworks},
+    tokens::tokens_price::TokensPricesRequestBuilder,
+};
 use std::time::Duration;
-use one_inch::client::{self, SupportedCurrencies, SupportedNetworks};
-use one_inch::tokens::tokens_price::TokensPricesRequestBuilder;
 
 #[tokio::main]
 async fn main() {
@@ -13,11 +15,9 @@ async fn main() {
     // Creating a new One Inch client with the provided API token and network ID
     let client = client::new_with_default_http(token.into(), network_id);
 
-
     // Getting all the custom currencies
-    let currencies = client.get_custom_currencies().await.map_err(|e| {
-        eprintln!("Error while making get currencies request: {}", e)
-    }).unwrap();
+    let currencies =
+        client.get_custom_currencies().await.map_err(|e| eprintln!("Error while making get currencies request: {}", e)).unwrap();
 
     println!("Total currencies supported : {}", &currencies.codes.len());
 
@@ -32,7 +32,6 @@ async fn main() {
     // timeout of 5 seconds to avoid server restrictions
     std::thread::sleep(Duration::from_secs(5));
 
-
     // Getting prices for couple of specified tokens
     let my_tokens_list: Vec<String> = vec![
         "0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3".into(), // TRX
@@ -41,12 +40,12 @@ async fn main() {
         "0x7083609fce4d1d8dc0c979aab8c869ea2c873402".into(), // DOT
     ];
 
-    let get_prices_details = TokensPricesRequestBuilder::new()
-        .addresses(my_tokens_list.clone())
-        .currency(SupportedCurrencies::USD).build().unwrap();
+    let get_prices_details =
+        TokensPricesRequestBuilder::new().addresses(my_tokens_list.clone()).currency(SupportedCurrencies::USD).build().unwrap();
 
-
-    let prices_usd = client.get_tokens_price(get_prices_details).await
+    let prices_usd = client
+        .get_tokens_price(get_prices_details)
+        .await
         .map_err(|e| eprintln!("Error while getting prices for tokens to usd : {e}"))
         .unwrap();
 
@@ -57,5 +56,4 @@ async fn main() {
             None => eprintln!("Price for token {} not found", token),
         }
     }
-
 }

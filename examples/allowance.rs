@@ -1,5 +1,7 @@
-use one_inch::swap::approve::*;
-use one_inch::client::{self, SupportedNetworks};
+use one_inch::{
+    client::{self, SupportedNetworks},
+    swap::approve::*,
+};
 
 #[tokio::main]
 async fn main() {
@@ -32,9 +34,6 @@ async fn main() {
     // Printing the obtained allowance information
     println!(
         "Allowance of token {} on account {} in network {:?} is : {} ",
-        allowance_details.token_address,
-        allowance_details.wallet_address,
-        network_id,
-        allowance.allowance
+        allowance_details.token_address, allowance_details.wallet_address, network_id, allowance.allowance
     )
 }

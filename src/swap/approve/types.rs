@@ -1,6 +1,5 @@
-use crate::builder_setter;
-use crate::utils::builder::BasicBuilderError;
-use serde::{Deserialize};
+use crate::{builder_setter, utils::builder::BasicBuilderError};
+use serde::Deserialize;
 
 /// Builder struct to create instance of `AllowanceDetails`
 #[derive(Default)]
@@ -26,22 +25,20 @@ impl AllowanceDetailsBuilder {
     builder_setter!(token_address, String);
     builder_setter!(wallet_address, String);
 
-    /// Attempts to construct a [`AllowanceDetails`](crate::swap::approve::AllowanceDetails) from the builder, returning errors if required fields are missing or if some of values are incorrect.
+    /// Attempts to construct a
+    /// [`AllowanceDetails`](crate::swap::approve::AllowanceDetails) from the
+    /// builder, returning errors if required fields are missing or if some of
+    /// values are incorrect.
     pub fn build(&self) -> Result<AllowanceDetails, BasicBuilderError> {
         Ok(AllowanceDetails {
-            wallet_address: self
-                .wallet_address
-                .clone()
-                .ok_or(BasicBuilderError::MissingField("wallet_address"))?,
-            token_address: self
-                .token_address
-                .clone()
-                .ok_or(BasicBuilderError::MissingField("token_address"))?,
+            wallet_address: self.wallet_address.clone().ok_or(BasicBuilderError::MissingField("wallet_address"))?,
+            token_address: self.token_address.clone().ok_or(BasicBuilderError::MissingField("token_address"))?,
         })
     }
 }
 
-/// Represents the struct we receive after making request to get current Allowance.
+/// Represents the struct we receive after making request to get current
+/// Allowance.
 #[derive(Deserialize, Debug)]
 pub struct AllowanceResponse {
     pub allowance: String,
@@ -68,17 +65,14 @@ impl ApproveTranactionDetailsBuilder {
     builder_setter!(token_address, String);
     builder_setter!(amount, Option<String>);
 
-    /// Attempts to construct a [`ApproveTranactionDetails`](crate::swap::approve::ApproveTranactionDetails) from the builder, returning errors if required fields are missing or if some of values are incorrect.
+    /// Attempts to construct a
+    /// [`ApproveTranactionDetails`](crate::swap::approve::ApproveTranactionDetails)
+    /// from the builder, returning errors if required fields are missing or if
+    /// some of values are incorrect.
     pub fn build(&self) -> Result<ApproveTranactionDetails, BasicBuilderError> {
         Ok(ApproveTranactionDetails {
-            token_address: self
-                .token_address
-                .clone()
-                .ok_or(BasicBuilderError::MissingField("token_address"))?,
-            amount: self
-                .amount
-                .clone()
-                .ok_or(BasicBuilderError::MissingField("amount"))?,
+            token_address: self.token_address.clone().ok_or(BasicBuilderError::MissingField("token_address"))?,
+            amount: self.amount.clone().ok_or(BasicBuilderError::MissingField("amount"))?,
         })
     }
 }
@@ -116,10 +110,7 @@ mod tests {
             .build()
             .unwrap();
 
-        assert_eq!(
-            &approve_details.token_address,
-            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
-        );
+        assert_eq!(&approve_details.token_address, "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
         assert_eq!(approve_details.amount.clone(), None);
     }
 
@@ -131,22 +122,10 @@ mod tests {
             .build()
             .unwrap();
 
-        assert_eq!(
-            &allowance_details.token_address,
-            "0x55d398326f99059ff775485246999027b3197955"
-        );
-        assert_eq!(
-            &allowance_details.wallet_address,
-            "0x30A557351eab496FD69F537BE1F8c744A18F94Fd"
-        );
+        assert_eq!(&allowance_details.token_address, "0x55d398326f99059ff775485246999027b3197955");
+        assert_eq!(&allowance_details.wallet_address, "0x30A557351eab496FD69F537BE1F8c744A18F94Fd");
 
-        assert_ne!(
-            &allowance_details.token_address,
-            "Everything another than address."
-        );
-        assert_ne!(
-            &allowance_details.wallet_address,
-            "Everything another than address."
-        );
+        assert_ne!(&allowance_details.token_address, "Everything another than address.");
+        assert_ne!(&allowance_details.wallet_address, "Everything another than address.");
     }
 }

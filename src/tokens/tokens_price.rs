@@ -1,20 +1,20 @@
-use std::collections::HashMap;
-use std::error::Error;
+use crate::{
+    builder_setter, client,
+    client::OneInchClient,
+    consts::{BASIC_URL, SPOT_PRICE_API_VERSION},
+    utils::builder::BasicBuilderError,
+};
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
-use crate::{builder_setter, client};
-use crate::client::OneInchClient;
-use crate::consts::{BASIC_URL, SPOT_PRICE_API_VERSION};
-use crate::utils::builder::BasicBuilderError;
+use std::{collections::HashMap, error::Error};
 
-
-/// Builder struct to create instance of [`TokensPricesRequestDetails`](crate::tokens::tokens_price::TokensPricesRequestDetails)
+/// Builder struct to create instance of
+/// [`TokensPricesRequestDetails`](crate::tokens::tokens_price::TokensPricesRequestDetails)
 #[derive(Default)]
 pub struct TokensPricesRequestBuilder {
-    addresses : Option<Vec<String>>,
-    currency : Option<client::SupportedCurrencies>,
+    addresses: Option<Vec<String>>,
+    currency: Option<client::SupportedCurrencies>,
 }
-
 
 impl TokensPricesRequestBuilder {
     pub fn new() -> TokensPricesRequestBuilder {
@@ -24,11 +24,13 @@ impl TokensPricesRequestBuilder {
     builder_setter!(addresses, Vec<String>);
     builder_setter!(currency, client::SupportedCurrencies);
 
-    /// Attempts to construct a [`TokensPricesRequestDetails`](crate::tokens::tokens_price::TokensPricesRequestDetails) from the builder, returning errors if required fields are missing.
+    /// Attempts to construct a
+    /// [`TokensPricesRequestDetails`](crate::tokens::tokens_price::TokensPricesRequestDetails)
+    /// from the builder, returning errors if required fields are missing.
     pub fn build(&self) -> Result<TokensPricesRequestDetails, BasicBuilderError> {
         Ok(TokensPricesRequestDetails {
-            addresses : self.addresses.clone().ok_or(BasicBuilderError::MissingField("addresses"))?,
-            currency: self.currency.clone()
+            addresses: self.addresses.clone().ok_or(BasicBuilderError::MissingField("addresses"))?,
+            currency: self.currency.clone(),
         })
     }
 }
@@ -37,37 +39,28 @@ impl TokensPricesRequestBuilder {
 /// Currency `None` means that price will returned in native Wei of blockchain.
 #[derive(Debug, Clone)]
 pub struct TokensPricesRequestDetails {
-    pub addresses : Vec<String>,
-    pub currency : Option<client::SupportedCurrencies>,
+    pub addresses: Vec<String>,
+    pub currency: Option<client::SupportedCurrencies>,
 }
 
-/// Represents the struct we receive after making request to get current prices for specified tokens.
-/// In fact response is just a hashmap where key is token`s address and value its price in selected currency.
-/// Note : 1inch always returns tokens addresses in lowercase.
+/// Represents the struct we receive after making request to get current prices
+/// for specified tokens. In fact response is just a hashmap where key is
+/// token`s address and value its price in selected currency. Note : 1inch
+/// always returns tokens addresses in lowercase.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TokenPricesResponse {
     #[serde(flatten)]
     pub prices: HashMap<String, String>,
 }
 
-
-
-
 impl OneInchClient {
     /// Performs request to get price of specified tokens in specified currency.
-    pub async fn get_tokens_price(
-        &self,
-        details: TokensPricesRequestDetails,
-    ) -> Result<TokenPricesResponse, Box<dyn Error>> {
-        let base_url = format!(
-            "{}/price/{}/{}/",
-            BASIC_URL,
-            SPOT_PRICE_API_VERSION,
-            self.network_id
-        );
+    pub async fn get_tokens_price(&self, details: TokensPricesRequestDetails) -> Result<TokenPricesResponse, Box<dyn Error>> {
+        let base_url = format!("{}/price/{}/{}/", BASIC_URL, SPOT_PRICE_API_VERSION, self.network_id);
 
-
-        let comma_separated_addresses = details.addresses.iter()
+        let comma_separated_addresses = details
+            .addresses
+            .iter()
             .map(|addr| addr.to_string())
             .map(|addr| addr.to_lowercase())
             .collect::<Vec<String>>()
@@ -84,22 +77,14 @@ impl OneInchClient {
 
         dbg!(&url.clone().to_string());
 
-        let request_result = self
-            .http_client
-            .get(url)
-            .header("Authorization", &self.token)
-            .send()
-            .await;
+        let request_result = self.http_client.get(url).header("Authorization", &self.token).send().await;
 
         let response = request_result
             .map_err(|e| Box::new(e) as Box<dyn Error>)?
             .error_for_status()
             .map_err(|e| Box::new(e) as Box<dyn Error>)?;
 
-        let tokens_prices_response: TokenPricesResponse = response
-            .json()
-            .await
-            .map_err(|e| Box::new(e) as Box<dyn Error>)?;
+        let tokens_prices_response: TokenPricesResponse = response.json().await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
 
         Ok(tokens_prices_response)
     }

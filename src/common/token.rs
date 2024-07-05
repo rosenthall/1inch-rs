@@ -1,4 +1,4 @@
-use serde::{Deserialize};
+use serde::Deserialize;
 
 /// Struct defines TokenInfo object.
 /// Contains basic information about specific token

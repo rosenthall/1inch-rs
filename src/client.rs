@@ -3,7 +3,8 @@ use strum_macros::{Display, FromRepr};
 
 /// Struct to work with 1inch api
 pub struct OneInchClient {
-    /// reqwest::Client does not need to be Rc/Arc because it already uses an Arc internally.
+    /// reqwest::Client does not need to be Rc/Arc because it already uses an
+    /// Arc internally.
     pub http_client: reqwest::Client,
 
     /// An authorization token for interacting with API.
@@ -17,11 +18,7 @@ pub struct OneInchClient {
 
 /// Function creates a OneInchClient instance with default http settings.
 pub fn new_with_default_http(token: String, network_id: SupportedNetworks) -> OneInchClient {
-    OneInchClient {
-        http_client: reqwest::Client::default(),
-        token,
-        network_id,
-    }
+    OneInchClient { http_client: reqwest::Client::default(), token, network_id }
 }
 
 /// List of all supported Networks/Chains with their IDs.
@@ -48,11 +45,52 @@ impl fmt::Display for SupportedNetworks {
     }
 }
 
-
 /// List of all supported currencies in 1inch.
 #[derive(Debug, Display, Clone)]
 pub enum SupportedCurrencies {
-    USD, AED, ARS, AUD, BDT, BHD, BMD, BRL, CAD, CHF, CLP, CNY, CZK, DKK, EUR, GBP,
-    HKD, HUF, IDR, ILS, INR, JPY, KRW, KWD, LKR, MMK, MXN, MYR, NGN, NOK, NZD,
-    PHP, PKR, PLN, RUB, SAR, SEK, SGD, THB, TRY, TWD, UAH, VEF, VND, ZAR
+    USD,
+    AED,
+    ARS,
+    AUD,
+    BDT,
+    BHD,
+    BMD,
+    BRL,
+    CAD,
+    CHF,
+    CLP,
+    CNY,
+    CZK,
+    DKK,
+    EUR,
+    GBP,
+    HKD,
+    HUF,
+    IDR,
+    ILS,
+    INR,
+    JPY,
+    KRW,
+    KWD,
+    LKR,
+    MMK,
+    MXN,
+    MYR,
+    NGN,
+    NOK,
+    NZD,
+    PHP,
+    PKR,
+    PLN,
+    RUB,
+    SAR,
+    SEK,
+    SGD,
+    THB,
+    TRY,
+    TWD,
+    UAH,
+    VEF,
+    VND,
+    ZAR,
 }

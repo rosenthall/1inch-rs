@@ -1,5 +1,7 @@
-use one_inch::swap::approve::*;
-use one_inch::client::{self, SupportedNetworks};
+use one_inch::{
+    client::{self, SupportedNetworks},
+    swap::approve::*,
+};
 
 #[tokio::main]
 async fn main() {
