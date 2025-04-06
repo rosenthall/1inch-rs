@@ -404,6 +404,174 @@ pub struct QuoteResponse {
     pub protocols: Option<Vec<Vec<Vec<SelectedProtocol>>>>,
 }
 
+/// Represents the details required for performing a token swap.
+#[derive(Debug, Clone)]
+pub struct SwapDetailsV6 {
+    pub src: String,     // Source token address.
+    pub dst: String,     // Destination token address.
+    pub amount: String,  // Amount to be swapped.
+    pub from: String,    // Address of the user initiating the swap.
+    pub origin: String,  // An EOA address that initiate the transaction
+    pub slippage: usize, // Permitted slippage percentage.
+
+    // Optional fields
+    pub fee: Option<u8>,
+    pub protocols: Option<String>,
+    pub gas_price: Option<String>,
+    pub complexity_level: Option<u128>,
+    pub parts: Option<u128>,
+    pub main_route_parts: Option<u128>,
+    pub gas_limit: Option<u128>,
+
+    pub include_tokens_info: Option<bool>,
+    pub include_protocols: Option<bool>,
+    pub include_gas: Option<bool>,
+    pub connector_tokens: Option<String>,
+    pub permit: Option<String>,
+    pub receiver: Option<String>,
+    pub referrer: Option<String>,
+
+    pub disable_estimate: Option<bool>,   // If true, disables estimation.
+    pub allow_partial_fill: Option<bool>, // If true, allows the swap to be partially filled.
+
+    pub use_permit2: Option<bool>,
+}
+
+/// Represents the details required for performing a token swap.
+#[derive(Default)]
+pub struct SwapDetailsV6Builder {
+    pub src: Option<String>,     // Source token address.
+    pub dst: Option<String>,     // Destination token address.
+    pub amount: Option<String>,  // Amount to be swapped.
+    pub from: Option<String>,    // Address of the user initiating the swap.
+    pub origin: Option<String>,  // An EOA address that initiate the transaction
+    pub slippage: Option<usize>, // Permitted slippage percentage.
+
+    // Optional fields
+    pub fee: Option<u8>,
+    pub protocols: Option<String>,
+    pub gas_price: Option<String>,
+    pub complexity_level: Option<u128>,
+    pub parts: Option<u128>,
+    pub main_route_parts: Option<u128>,
+    pub gas_limit: Option<u128>,
+
+    pub include_tokens_info: Option<bool>,
+    pub include_protocols: Option<bool>,
+    pub include_gas: Option<bool>,
+    pub connector_tokens: Option<String>,
+    pub permit: Option<String>,
+    pub receiver: Option<String>,
+    pub referrer: Option<String>,
+
+    pub disable_estimate: Option<bool>,   // If true, disables estimation.
+    pub allow_partial_fill: Option<bool>, // If true, allows the swap to be partially filled.
+
+    pub use_permit2: Option<bool>,
+}
+
+impl SwapDetailsV6Builder {
+    pub fn new() -> Self {
+        SwapDetailsV6Builder::default()
+    }
+
+    builder_setter!(src, String);
+    builder_setter!(dst, String);
+    builder_setter!(amount, String);
+    builder_setter!(origin, String);
+    builder_setter!(from, String);
+
+    builder_setter!(protocols, String);
+    builder_setter!(gas_price, String);
+    builder_setter!(complexity_level, u128);
+    builder_setter!(parts, u128);
+    builder_setter!(main_route_parts, u128);
+    builder_setter!(gas_limit, u128);
+
+    builder_setter!(include_tokens_info, bool);
+    builder_setter!(include_protocols, bool);
+    builder_setter!(include_gas, bool);
+
+    builder_setter!(connector_tokens, String);
+    builder_setter!(permit, String);
+    builder_setter!(receiver, String);
+    builder_setter!(referrer, String);
+
+    builder_setter!(disable_estimate, bool);
+    builder_setter!(allow_partial_fill, bool);
+    builder_setter!(use_permit2, bool);
+
+
+    /// Special setter for fee that ensures value is within allowable range.
+    pub fn fee(mut self, fee: u8) -> Result<Self, QuoteDetailsBuilderError> {
+        if fee > 3 {
+            return Err(QuoteDetailsBuilderError::InvalidFee);
+        }
+        self.fee = Some(fee);
+        Ok(self)
+    }
+
+        /// Special setter for slippage that ensures value is within allowable
+    /// range.
+    pub fn slippage(mut self, slippage: usize) -> Result<Self, SwapDetailsBuilderError> {
+        if slippage > 50 {
+            return Err(SwapDetailsBuilderError::InvalidSlippage);
+        }
+        self.slippage = Some(slippage);
+        Ok(self)
+    }
+
+        /// Attempts to construct a ['SwapDetails'](crate::swap::types::SwapDetailsV6Builder)
+    /// from the builder, returning errors if required fields are missing or if
+    /// some of values are incorrect.
+    pub fn build(self) -> Result<SwapDetailsV6, SwapDetailsBuilderError> {
+        Ok(SwapDetailsV6 {
+            src: self.src.ok_or(SwapDetailsBuilderError::MissingField("src"))?,
+            dst: self.dst.ok_or(SwapDetailsBuilderError::MissingField("dst"))?,
+            amount: self.amount.ok_or(SwapDetailsBuilderError::MissingField("amount"))?.to_string(),
+            from: self.from.ok_or(SwapDetailsBuilderError::MissingField("from"))?,
+            origin: self.origin.ok_or(SwapDetailsBuilderError::MissingField("origin"))?,
+            slippage: self.slippage.ok_or(SwapDetailsBuilderError::MissingField("slippage"))?,
+
+            fee: self.fee,
+            protocols: self.protocols,
+            gas_price: self.gas_price,
+            complexity_level: self.complexity_level,
+            parts: self.parts,
+            main_route_parts: self.main_route_parts,
+            gas_limit: self.gas_limit,
+            include_tokens_info: self.include_tokens_info,
+            include_protocols: self.include_protocols,
+            include_gas: self.include_gas,
+            connector_tokens: self.connector_tokens,
+            permit: self.permit,
+            receiver: self.receiver,
+            referrer: self.referrer,
+            disable_estimate: self.disable_estimate,
+            allow_partial_fill: self.allow_partial_fill,
+            use_permit2: self.use_permit2,
+        })
+    }
+}
+
+/// SwapResponse is a struct to deserialize data we can get on swap request.
+#[derive(Deserialize, Debug)]
+pub struct SwapV6Response {
+    #[serde(rename = "fromToken")]
+    pub from_token: Option<TokenInfo>,
+
+    #[serde(rename = "toToken")]
+    pub to_token: Option<TokenInfo>,
+
+    #[serde(rename = "dstAmount")]
+    pub dst_amount: String,
+
+    pub protocols: Option<Vec<Vec<Vec<SelectedProtocol>>>>,
+
+    #[serde(rename = "tx")]
+    pub transaction: SwapTranactionData,
+}
+
 /// Tests for the `SwapDetailsBuilder` and related components.
 #[cfg(test)]
 mod tests {

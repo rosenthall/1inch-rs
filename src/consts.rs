@@ -3,6 +3,7 @@
 
 pub const BASIC_URL: &str = "https://api.1inch.dev";
 
+pub const SWAP_V6_API_VERSION: &str = "v6.0";
 pub const SWAP_API_VERSION: &str = "v5.2";
 pub const ORDERBOOK_API_VERSION: &str = "v3.0";
 pub const FUSION_API_VERSION: &str = "v1.0";
